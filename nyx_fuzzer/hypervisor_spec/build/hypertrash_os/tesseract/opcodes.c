@@ -58,7 +58,7 @@ void set_ret(void* addr){
 extern void set_ret(void* addr);
 
 
-uint8_t* tmp_data[0x1000];
+static uint8_t* tmp_data[0x1000];
 
 static inline uint8_t safe_inb(uint16_t port){
 #ifdef INTERPRETER_BENCHMARK

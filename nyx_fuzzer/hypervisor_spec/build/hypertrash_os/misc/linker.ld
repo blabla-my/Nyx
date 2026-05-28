@@ -41,7 +41,7 @@ SECTIONS
 	}
 
 	/* Pointer to end of binary */
-	kernel_end=.;
+	kernel_end = .;
 
 
 	/* The compiler may produce other sections, by default it will put them in

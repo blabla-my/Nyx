@@ -18,7 +18,7 @@
 
 
 AS=as --32
-CC=gcc-8 -m32
+CC=gcc -m32
 
 CFLAGS=-c -std=gnu99 -ffreestanding -O1 -Wall -Wextra -static -DHYPERTRASH -DLOOP
 LDFLAGS=-T misc/linker.ld -ffreestanding -O1 -nostdlib -static

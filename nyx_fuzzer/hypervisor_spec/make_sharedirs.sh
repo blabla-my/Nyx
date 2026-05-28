@@ -1,3 +1,4 @@
+sudo apt install libc6-dev-i386
 set -e
 cd build/hypertrash_os
 make clean 

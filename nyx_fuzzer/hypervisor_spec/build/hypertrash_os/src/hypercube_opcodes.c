@@ -64,7 +64,7 @@ xor io(region_base, region_size, offset, mask)
 
 */
 
-uint8_t* tmp_data[0x4000];
+static uint8_t* tmp_data[0x4000];
 uint32_t x32 = 314159265;
 
 static uint32_t xorshift32(){

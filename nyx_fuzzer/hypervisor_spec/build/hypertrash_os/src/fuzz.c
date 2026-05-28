@@ -58,7 +58,7 @@ fuzzer_state_t* new_fuzzer(void){
 	self->hexa_state->io_area = kmalloc(sizeof(area_t*) * 256);
 
 
-	self->address_page = (uintptr_t)kvmalloc(0x1000);
+	self->address_page = (uintptr_t)kvmalloc_p(0x1000, &self->address_page_phys);
 	memset((void*)self->address_page, 0x0, 0x1000);
 
 

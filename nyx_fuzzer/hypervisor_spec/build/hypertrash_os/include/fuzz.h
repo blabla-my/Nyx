@@ -26,6 +26,7 @@
 typedef struct {
 	state_t* hexa_state;
 	uintptr_t address_page;
+	uintptr_t address_page_phys;
 	volatile uintptr_t payload_buffer; 
 }fuzzer_state_t;
 

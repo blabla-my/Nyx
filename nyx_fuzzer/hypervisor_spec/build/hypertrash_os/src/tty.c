@@ -152,11 +152,12 @@ int tty_printf(const char* fmt, ...) {
 	int out = vasprintf(buf, fmt, args);
 	va_end(args);
 
+	serial_send_string(SERIAL_PORT_A, buf);
+
 #ifndef PAYLOAD
 	exec_hprintf_str(buf);
 #else
 	//tty_writestring(buf);
-	//serial_send_string(SERIAL_PORT_A, buf);
 #endif
 
 	return out;

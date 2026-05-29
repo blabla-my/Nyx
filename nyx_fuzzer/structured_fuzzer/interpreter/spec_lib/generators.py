@@ -29,3 +29,14 @@ class LimitsGenerator:
 
 def limits(min,max,align=1):
     return LimitsGenerator(min,max,align)
+
+
+class RegexGenerator:
+    def __init__(self,regex_str):
+        self.str = str(regex_str)
+    
+    def msgpack(self):
+        return ["Regex",self.str]
+
+def regex(rstr):
+    return RegexGenerator(rstr)

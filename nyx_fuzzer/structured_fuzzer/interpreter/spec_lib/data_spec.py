@@ -67,7 +67,7 @@ class IntDataType:
 
 
 class VecDataType:
-    def __init__(self, d_id, name, dtype, size_range):
+    def __init__(self, d_id, name, dtype, size_range, generators):
         assert(dtype.fixed_size);
         self.d_id = d_id
         self.name = name
@@ -75,11 +75,12 @@ class VecDataType:
         self.fixed_size = False
         self.size_range = size_range
         self.dtype = dtype
+        self.generators = generators
         self.c_type_name = "d_vec_"+self.name
         self.c_type_def = "typedef struct {size_t count; %s* vals; } %s;"%(self.dtype.c_type_name, self.c_type_name)
     
     def msgpack(self):
-        return ["Vec", self.name, [self.size_range[0], self.size_range[1]], self.dtype.d_id]
+        return ["Vec", self.name, [self.size_range[0], self.size_range[1]], self.dtype.d_id, [g.msgpack() for g in self.generators]]
 
 class ArrayDataType:
     def __init__(self, d_id, name, dtype, count):

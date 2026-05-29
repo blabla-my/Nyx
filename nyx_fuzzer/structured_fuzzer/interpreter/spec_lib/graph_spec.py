@@ -31,7 +31,7 @@ class NodeType:
         atomic_id = None
         if self.data:
             atomic_id = self.data.d_id
-        return [self.name, atomic_id, [inp.id for inp in self.inputs], [bor.id for bor in self.borrows], [out.id for out in self.outputs] ]
+        return [self.name, atomic_id, [inp.id for inp in self.inputs], [bor.id for bor in self.borrows], [out.id for out in self.outputs], False]
     
 
 class EdgeType:
@@ -106,8 +106,8 @@ class Spec:
         self.atomics.append(dat)
         return dat
 
-    def data_vec(self, name, dtype, size_range):
-        dat = VecDataType(len(self.atomics), name, dtype, size_range)
+    def data_vec(self, name, dtype, size_range, generators=[]):
+        dat = VecDataType(len(self.atomics), name, dtype, size_range, generators)
         self.atomics.append(dat)
         return dat
 

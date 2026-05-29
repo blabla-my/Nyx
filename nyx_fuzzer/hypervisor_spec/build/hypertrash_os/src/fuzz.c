@@ -31,6 +31,8 @@
 //#define DEBUG
 
 #define STR_PREFIX	" [FUZZ] "
+#define PAYLOAD_PAGE_SIZE 0x1000
+#define PAYLOAD_PAGE_COUNT (PAYLOAD_SIZE / PAYLOAD_PAGE_SIZE)
 
 #ifdef PAYLOAD
 extern uint8_t _binary_misc_crash_hexa_start;
@@ -68,19 +70,19 @@ fuzzer_state_t* new_fuzzer(void){
 	memset(self->hexa_state->alloc_areas[0], 0xff, 0x1000);
 	self->hexa_state->alloc_areas[1] = kvmalloc(0x1000);
 
-	printf(STR_PREFIX"Allocating 64kB memory for fuzzer payload buffer\n\r");
-	self->payload_buffer = (uintptr_t)kvmalloc( (64 * 1024)); // Alloc 64kB
-	printf(STR_PREFIX"payload_buffer = 0x%x-0x%x\n\r", self->payload_buffer, self->payload_buffer+(64*1024));
-	memset((void*)self->payload_buffer, 0xff, 64*1024);
+	printf(STR_PREFIX"Allocating %dkB memory for fuzzer payload buffer\n\r", PAYLOAD_SIZE >> 10);
+	self->payload_buffer = (uintptr_t)kvmalloc(PAYLOAD_SIZE);
+	printf(STR_PREFIX"payload_buffer = 0x%x-0x%x\n\r", self->payload_buffer, self->payload_buffer+PAYLOAD_SIZE);
+	memset((void*)self->payload_buffer, 0xff, PAYLOAD_SIZE);
 	printf(STR_PREFIX"Payload buffer prepared!\n\r");
 
 	uint32_t address = self->payload_buffer;
 
 		
-	for (uint32_t i = 0; i < (64/4); i++){
+	for (uint32_t i = 0; i < PAYLOAD_PAGE_COUNT; i++){
 		*((uint32_t*)(self->address_page + (0x8 * i))) = address;
 		printf(STR_PREFIX"REQ HYPERCALL (%x:%x) [PAYLOAD BUFFER SETUP]\n\r", i, address);
-		address += 4096;
+		address += PAYLOAD_PAGE_SIZE;
 	}
 
 	printf("Ready!\n\r");
@@ -128,7 +130,7 @@ void register_area(fuzzer_state_t* self, uintptr_t base_address, uint32_t size, 
 
 static __attribute__((unused)) void provide_addresses(fuzzer_state_t* self){
 	printf("%s\n\r", __func__);
-	kAFL_hypercall(HYPERCALL_KAFL_NESTED_PREPARE, self->address_page | 16);
+	kAFL_hypercall(HYPERCALL_KAFL_NESTED_PREPARE, self->address_page | PAYLOAD_PAGE_COUNT);
 }
 
 static __attribute__((unused)) void provide_configuration(fuzzer_state_t* self){

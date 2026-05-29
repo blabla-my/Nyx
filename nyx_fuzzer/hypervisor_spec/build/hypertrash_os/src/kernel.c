@@ -194,7 +194,7 @@ void kernel_main(struct multiboot_tag* mbi, uint32_t mboot_magic, uint32_t foo) 
 		uint8_t* payload_buffer = prepare_fuzzing(fuzzer);
 		kernel_ready();
 
-		start_fuzzing(payload_buffer, (64 * 1024));
+		start_fuzzing(payload_buffer, PAYLOAD_SIZE);
 	}
 	printf("Shutdown...\n");
 	
